@@ -2,6 +2,7 @@ const LoginPath = require("./login.js")
 const authMiddleware = require('./authMiddleware');
 const { DispositivosModel } = require('./database');
 const { UsuariosModel } = require('./database');
+const { DataModel } = require('./database');
 const app = require('express')()
 
 app.use(LoginPath);

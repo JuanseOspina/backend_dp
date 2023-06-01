@@ -16,11 +16,20 @@ var dispositivos_tabla = new mongoose.Schema({
   MAC: String,
   fecha: Date
 })
+
+var data_tabla = new mongoose.Schema({
+  MAC: String,
+  fecha: Date,
+  temperatura: Number,
+  presence: Boolean
+})
   
 var UsuariosModel = mongoose.model("Usuarios",usuarios_tabla)
 var DispositivosModel = mongoose.model("Dispositivos",dispositivos_tabla)
+var DataModel = mongoose.model("Data",data_tabla)
 
 module.exports = {
   UsuariosModel,
-  DispositivosModel
+  DispositivosModel,
+  DataModel
 }

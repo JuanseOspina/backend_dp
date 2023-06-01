@@ -90,7 +90,7 @@ app.post('/login',async (req,res)=>{
         if (await bcrypt.compare(Password_body,info.Password)){
           payload.res = "Login correcto"
           const token = jwt.sign(data, app.get('key'), {
-            expiresIn : 300
+            expiresIn : 200000
           })
           payload.token = token
         }else{
