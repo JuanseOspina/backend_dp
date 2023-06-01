@@ -17,20 +17,74 @@ app.get('/time',authMiddleware,(req,res) =>{
     res.status(200).send(payload);
 })
 
-app.post('/temp',authMiddleware,(req,res) => {
-    console.log(req.body)
-    const temperature = req.body.temp;
-    const timestamp = new Date().toISOString();
+app.post('/temp',authMiddleware,async (req,res) => {
+    var payload = {
+        error : ""
+    }
 
-    console.log(temperature)
-    res.status(200).send("Temperature registrated at "+ timestamp);
+    const timestamp = new Date().toISOString();
+    data = req.body
+    if(data){
+        data.fecha = timestamp
+
+        let query_dev ={
+            MAC : data.MAC
+        }
+
+        let info_mac = await DispositivosModel.findOne(query_dev).exec()
+
+
+        if(info_mac == null){
+            payload.res = "Device not registed"
+        }else{
+            let registro = new DataModel(data)
+            registro.save().then(item=>{
+                payload.res = "Register ok"
+            }).catch(err =>{
+                payload.res = "No saved data"
+            })
+        }
+    }else{
+        payload.res = "body nulo"
+    }
+    
+    console.log(data)
+    res.status(200).send(payload);
 })
 
-app.post('/pres',authMiddleware,(req,res) => {
-    console.log(req.body)
-    const timestamp = new Date().toISOString();
+app.post('/pres',authMiddleware,async (req,res) => {
+    var payload = {
+        error : ""
+    }
 
-    res.status(200).send("Presence registrated at "+ timestamp);
+    const timestamp = new Date().toISOString();
+    data = req.body
+    if(data){
+        data.fecha = timestamp
+
+        let query_dev ={
+            MAC : data.MAC
+        }
+
+        let info_mac = await DispositivosModel.findOne(query_dev).exec()
+
+
+        if(info_mac == null){
+            payload.res = "Device not registed"
+        }else{
+            let registro = new DataModel(data)
+            registro.save().then(item=>{
+                payload.res = "Register ok"
+            }).catch(err =>{
+                payload.res = "No saved data"
+            })
+        }
+    }else{
+        payload.res = "body nulo"
+    }
+    
+    console.log(data)
+    res.status(200).send(payload);
 })
 
 app.post('/dev',authMiddleware, async(req,res) => {

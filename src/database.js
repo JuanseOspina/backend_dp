@@ -20,7 +20,7 @@ var dispositivos_tabla = new mongoose.Schema({
 var data_tabla = new mongoose.Schema({
   MAC: String,
   fecha: Date,
-  temperatura: Number,
+  temp: Number,
   presence: Boolean
 })
   
