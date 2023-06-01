@@ -1,7 +1,7 @@
 const LoginPath = require("./login.js")
 const authMiddleware = require('./authMiddleware');
-const UsuariosModel = require('./database');
 const { DispositivosModel } = require('./database');
+const { UsuariosModel } = require('./database');
 const app = require('express')()
 
 app.use(LoginPath);
@@ -32,21 +32,43 @@ app.post('/pres',authMiddleware,(req,res) => {
     res.status(200).send("Presence registrated at "+ timestamp);
 })
 
-app.post('/dev',authMiddleware,(req,res) => {
-    console.log(req.body)
-    const timestamp = new Date().toISOString();
-
-    data = req.body
-    res.status(200).send("Device registrated at "+ timestamp);
-})
-
-app.post('/DB',authMiddleware, async(req,res)=>{
-    let cedula = req.body.cedula 
-    let query ={
-      cedula : cedula
+app.post('/dev',authMiddleware, async(req,res) => {
+    var payload = {
+        error : ""
     }
-    let data = await UsuariosModel.findOne(query).exec()
-    res.send(data)
-  })
+
+    const timestamp = new Date().toISOString();
+    data = req.body
+    data.fecha = timestamp
+
+    let query ={
+        User : data.User
+    }
+
+    let query_dev ={
+        MAC : data.MAC
+    }
+
+    let info_user = await UsuariosModel.findOne(query).exec()
+
+    if(info_user == null){
+        payload.res = "User not found"
+    }else{
+        let dev_info = await DispositivosModel.findOne(query_dev).exec()
+
+        if (dev_info == null){
+            let registro = new DispositivosModel(data)
+            registro.save().then(item=>{
+                payload.res = "Register ok"
+            }).catch(err =>{
+                payload.res = "No saved data"
+            })
+        }else{
+            payload.res = "Device already registed"
+        } 
+    }
+
+    res.status(200).send(payload);
+})
 
 module.exports = app

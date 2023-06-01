@@ -49,9 +49,9 @@ app.post('/register', async (req,res)=>{
             let registro = new UsuariosModel(data)
 
             registro.save().then(item=>{
-            payload.res = "Register ok"
+              payload.res = "Register ok"
             }).catch(err =>{
-            payload.res = "No saved data"
+              payload.res = "No saved data"
             })
           }else{
             payload.res = "Email already used"
@@ -73,6 +73,7 @@ app.post('/login',async (req,res)=>{
     var payload = {
       error : ""
     }
+    data = req.body
     
     if (data){
       User_body = req.body.User
