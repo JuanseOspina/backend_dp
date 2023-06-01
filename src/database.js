@@ -7,7 +7,6 @@ var usuarios_tabla = new mongoose.Schema({
     User: String,
     Password: String,
     Nombre: String,
-    Cedula: Number,
     Correo: String,
     fecha: Date
 })

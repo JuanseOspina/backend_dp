@@ -36,7 +36,8 @@ app.post('/dev',authMiddleware,(req,res) => {
     console.log(req.body)
     const timestamp = new Date().toISOString();
 
-    res.status(200).send("Presence registrated at "+ timestamp);
+    data = req.body
+    res.status(200).send("Device registrated at "+ timestamp);
 })
 
 app.post('/DB',authMiddleware, async(req,res)=>{
